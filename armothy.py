@@ -3,13 +3,13 @@ from communication import Communication
 
 
 class ePumpState(Enum):
-    OFF = 0
-    ON = 1
+    ON = 0
+    OFF = 1
 
 
 class eValveState(Enum):
-    CLOSED = 0
-    OPENED = 1
+    OPENED = 0
+    CLOSED = 1
 
 
 class eDoF(Enum):
@@ -33,12 +33,12 @@ class Armothy:
 
     @property
     def pump_state(self):
-        self._pump_state = ePumpState(self.communication.is_pump_on())
+        self._pump_state = ePumpState(self.communication.is_pump_off())
         return self._pump_state
 
     @property
     def valve_state(self):
-        self._valve_state = eValveState(self.communication.is_valve_open())
+        self._valve_state = eValveState(self.communication.is_valve_closed())
         return self._valve_state
 
     @property
@@ -85,6 +85,18 @@ class Armothy:
     def set_dof(self, axis, goals):
         for i, ax in enumerate(axis):
             self.communication.send_axis_command(ax, goals[i])
+
+    def close_valve(self):
+        self.communication.close_valve()
+
+    def open_valve(self):
+        self.communication.open_valve()
+
+    def stop_pump(self):
+        self.communication.stop_pump()
+
+    def start_pump(self):
+        self.communication.start_pump()
 
     def update(self):
         self._pump_state = ePumpState(self.communication.is_pump_on())

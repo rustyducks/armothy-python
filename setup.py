@@ -14,6 +14,10 @@ setuptools.setup(
 
      author_email="buisanguilhem@gmail.com",
 
+     install_requires=[
+          'smbus2',
+      ],
+
      description="The library to control the 3 DoF robot arm for the 2019 French Robotics Cup.",
 
      long_description=long_description,

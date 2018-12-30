@@ -26,14 +26,14 @@ PRESSURE_RQST = 0x0F  # 4 bytes(float)
 class Communication:
 
     def __init__(self, armothy_address):
-        self.i2c = SMBus(0)
+        self.i2c = SMBus(1)
         self.armothy_address = armothy_address
 
     def start_calibration(self):
         self.i2c.write_byte(self.armothy_address, START_CALIBRATION_CMD)
 
     def send_axis_command(self, axis, value):
-        stream_value = bitstring.pack('float:32', value)
+        stream_value = bitstring.pack('floatle:32', value)
         if axis == 0:
             self.i2c.write_i2c_block_data(self.armothy_address, DIRECT_AXIS_1_CMD, stream_value.bytes)
         elif axis == 1:
@@ -57,6 +57,7 @@ class Communication:
         self.i2c.write_byte(self.armothy_address, EMERGENCY_STOP_CMD)
 
     def is_calibration_running(self):
+        self.i2c.write_byte(self.armothy_address, CALIBRATION_ENDED_RQST)
         block = self.i2c.read_i2c_block_data(self.armothy_address, CALIBRATION_ENDED_RQST, 1)
         value = bitstring.pack('uint:8', *block)
         return value.int
@@ -64,25 +65,31 @@ class Communication:
     def get_axis_value(self, axis):
         block = []
         if axis == 0:
+            self.i2c.write_byte(self.armothy_address, AXIS_1_POSITION_RQST)
             block = self.i2c.read_i2c_block_data(self.armothy_address, AXIS_1_POSITION_RQST, 4)
         elif axis == 1:
+            self.i2c.write_byte(self.armothy_address, AXIS_2_POSITION_RQST)
             block = self.i2c.read_i2c_block_data(self.armothy_address, AXIS_2_POSITION_RQST, 4)
         elif axis == 2:
+            self.i2c.write_byte(self.armothy_address, AXIS_3_POSITION_RQST)
             block = self.i2c.read_i2c_block_data(self.armothy_address, AXIS_3_POSITION_RQST, 4)
         value = bitstring.pack('4*uint:8', *block)
-        return value.float  # Maybe replace with floatle (depends on the Teensy)
+        return value.floatle
 
-    def is_pump_on(self):
+    def is_pump_off(self):
+        self.i2c.write_byte(self.armothy_address, PUMP_STATE_RQST)
         block = self.i2c.read_i2c_block_data(self.armothy_address, PUMP_STATE_RQST, 1)
-        value = bitstring.pack('uint:8', *block)
+        value = bitstring.pack('uint:8', block)
         return value.int
 
-    def is_valve_open(self):
+    def is_valve_closed(self):
+        self.i2c.write_byte(self.armothy_address, VALVE_STATE_RQST)
         block = self.i2c.read_i2c_block_data(self.armothy_address, VALVE_STATE_RQST, 1)
-        value = bitstring.pack('uint:8', *block)
+        value = bitstring.pack('uint:8', block)
         return value.int
 
     def get_pressure_value(self):
+        self.i2c.write_byte(self.armothy_address, PRESSURE_RQST)  # Needed because we need to specify twice the command
         block = self.i2c.read_i2c_block_data(self.armothy_address, PRESSURE_RQST, 4)
         value = bitstring.pack('4*uint:8', *block)
-        return value.float
+        return value.floatle

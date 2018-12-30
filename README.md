@@ -6,7 +6,7 @@ A small python3 library made to control the 3 DoF robotic arm made by the Rusty 
 Installation
 ------------
 1. Clone this repo `git clone git@github.com:rustyducks/armothy-python.git`
-2. Install it `cd armothy-python && python3 setup.py install`
+2. Install it `cd armothy-python && python3 setup.py install --user`
 3. Use it !
 
 Update
