@@ -16,6 +16,7 @@ setuptools.setup(
 
      install_requires=[
           'smbus2',
+          'bitstring'
       ],
 
      description="The library to control the 3 DoF robot arm for the 2019 French Robotics Cup.",
