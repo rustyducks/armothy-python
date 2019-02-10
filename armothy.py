@@ -17,6 +17,9 @@ class eDoF(Enum):
     REVOLUTE_Z_AXIS = 1
     REVOLUTE_Y_AXIS = 2
 
+class eMacros(Enum):
+    CATCH = 0
+    TAKE_AND_STORE = 1
 
 class Armothy:
     def __init__(self, armothy_i2c_address):
@@ -97,6 +100,9 @@ class Armothy:
 
     def start_pump(self):
         self.communication.start_pump()
+    
+    def execute_macro(self, macro):
+        self.communication.send_macro_command(macro.value)
 
     def update(self):
         self._pump_state = ePumpState(self.communication.is_pump_on())

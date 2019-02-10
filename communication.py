@@ -11,16 +11,17 @@ STOP_PUMP_CMD = 0x04
 START_PUMP_CMD = 0x05
 CLOSE_VALVE_CMD = 0x06
 OPEN_VALVE_CMD = 0x07
-EMERGENCY_STOP_CMD = 0x08
+MACRO_CMD = 0x08          # Expects 1 byte integer with this command
+EMERGENCY_STOP_CMD = 0x09
 
 # Request commands(answer length specified in comment)
-CALIBRATION_ENDED_RQST = 0x09  # 1 byte(0: ended; 1: running)
-AXIS_1_POSITION_RQST = 0x0A  # 4 bytes(float)
-AXIS_2_POSITION_RQST = 0x0B  # 4 bytes(float)
-AXIS_3_POSITION_RQST = 0x0C  # 4 bytes(float)
-PUMP_STATE_RQST = 0x0D  # 1 byte(0: stopped; 1: started)
-VALVE_STATE_RQST = 0x0E  # 1 byte(0: closed; 1: opened)
-PRESSURE_RQST = 0x0F  # 4 bytes(float)
+CALIBRATION_ENDED_RQST = 0x0A  # 1 byte(0: ended; 1: running)
+AXIS_1_POSITION_RQST = 0x0B  # 4 bytes(float)
+AXIS_2_POSITION_RQST = 0x0C  # 4 bytes(float)
+AXIS_3_POSITION_RQST = 0x0D  # 4 bytes(float)
+PUMP_STATE_RQST = 0x0E  # 1 byte(0: stopped; 1: started)
+VALVE_STATE_RQST = 0x0F  # 1 byte(0: closed; 1: opened)
+PRESSURE_RQST = 0x10  # 4 bytes(float)
 
 
 class Communication:
@@ -52,6 +53,10 @@ class Communication:
 
     def open_valve(self):
         self.i2c.write_byte(self.armothy_address, OPEN_VALVE_CMD)
+    
+    def send_macro_command(self, macroNb):
+        stream_value = bitstring.pack('uint:8', macroNb)
+        self.i2c.write_i2c_block_data(self.armothy_address, MACRO_CMD, stream_value.bytes)
 
     def emergency_stop(self):
         self.i2c.write_byte(self.armothy_address, EMERGENCY_STOP_CMD)
