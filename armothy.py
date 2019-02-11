@@ -101,8 +101,8 @@ class Armothy:
     def start_pump(self):
         self.communication.start_pump()
     
-    def execute_macro(self, macro):
-        self.communication.send_macro_command(macro.value)
+    def execute_macro(self, macro, args):
+        self.communication.send_macro_command(macro.value, args)
 
     def update(self):
         self._pump_state = ePumpState(self.communication.is_pump_on())

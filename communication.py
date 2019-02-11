@@ -59,8 +59,16 @@ class Communication:
         stream_value = bitstring.pack('uint:8', 0)
         self.i2c.write_i2c_block_data(self.armothy_address, OPEN_VALVE_CMD, stream_value.bytes)
     
-    def send_macro_command(self, macroNb):
-        stream_value = bitstring.pack('uint:8, uintle:32', 1, macroNb)
+    def send_macro_command(self, macroNb, args):
+        """
+        expect as args a list of tuples with the type, then the value of the argument.
+        ex : args = [('float', 14.2), ('int', -45), ('uint', 72)]
+        """
+        bitstring_format = 'uint:8, uintle:32'
+        if len(args)>0:
+             bitstring_format += ", " + ", ".join(t+"le:32" for t,value in args)
+        values = [value for t, value in args]
+        stream_value = bitstring.pack(bitstring_format, len(args)+1,  macroNb, *values)
         self.i2c.write_i2c_block_data(self.armothy_address, MACRO_CMD, stream_value.bytes)
 
     def emergency_stop(self):
