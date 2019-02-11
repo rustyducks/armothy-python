@@ -31,10 +31,11 @@ class Communication:
         self.armothy_address = armothy_address
 
     def start_calibration(self):
-        self.i2c.write_byte(self.armothy_address, START_CALIBRATION_CMD)
+        stream_value = bitstring.pack('uint:8', 0)
+        self.i2c.write_i2c_block_data(self.armothy_address, START_CALIBRATION_CMD, stream_value.bytes)
 
     def send_axis_command(self, axis, value):
-        stream_value = bitstring.pack('floatle:32', value)
+        stream_value = bitstring.pack('uint:8, floatle:32', 1, value)
         if axis == 0:
             self.i2c.write_i2c_block_data(self.armothy_address, DIRECT_AXIS_1_CMD, stream_value.bytes)
         elif axis == 1:
@@ -43,23 +44,28 @@ class Communication:
             self.i2c.write_i2c_block_data(self.armothy_address, DIRECT_AXIS_3_CMD, stream_value.bytes)
 
     def stop_pump(self):
-        self.i2c.write_byte(self.armothy_address, STOP_PUMP_CMD)
+        stream_value = bitstring.pack('uint:8', 0)
+        self.i2c.write_i2c_block_data(self.armothy_address, STOP_PUMP_CMD, stream_value.bytes)
 
     def start_pump(self):
-        self.i2c.write_byte(self.armothy_address, START_PUMP_CMD)
+        stream_value = bitstring.pack('uint:8', 0)
+        self.i2c.write_i2c_block_data(self.armothy_address, START_PUMP_CMD, stream_value.bytes)
 
     def close_valve(self):
-        self.i2c.write_byte(self.armothy_address, CLOSE_VALVE_CMD)
+        stream_value = bitstring.pack('uint:8', 0)
+        self.i2c.write_i2c_block_data(self.armothy_address, CLOSE_VALVE_CMD, stream_value.bytes)
 
     def open_valve(self):
-        self.i2c.write_byte(self.armothy_address, OPEN_VALVE_CMD)
+        stream_value = bitstring.pack('uint:8', 0)
+        self.i2c.write_i2c_block_data(self.armothy_address, OPEN_VALVE_CMD, stream_value.bytes)
     
     def send_macro_command(self, macroNb):
-        stream_value = bitstring.pack('uint:8', macroNb)
+        stream_value = bitstring.pack('uint:8, uintle:32', 1, macroNb)
         self.i2c.write_i2c_block_data(self.armothy_address, MACRO_CMD, stream_value.bytes)
 
     def emergency_stop(self):
-        self.i2c.write_byte(self.armothy_address, EMERGENCY_STOP_CMD)
+        stream_value = bitstring.pack('uint:8', 0)
+        self.i2c.write_i2c_block_data(self.armothy_address, EMERGENCY_STOP_CMD, stream_value.bytes)
 
     def is_calibration_running(self):
         self.i2c.write_byte(self.armothy_address, CALIBRATION_ENDED_RQST)
