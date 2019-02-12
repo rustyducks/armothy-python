@@ -21,7 +21,9 @@ AXIS_2_POSITION_RQST = 0x0C  # 4 bytes(float)
 AXIS_3_POSITION_RQST = 0x0D  # 4 bytes(float)
 PUMP_STATE_RQST = 0x0E  # 1 byte(0: stopped; 1: started)
 VALVE_STATE_RQST = 0x0F  # 1 byte(0: closed; 1: opened)
-PRESSURE_RQST = 0x10  # 4 bytes(float)
+ERROR_BYTE_RQST = 0x10  # 1byte ?????
+MACRO_STATUS_RQST = 0x11   # 1 byte
+PRESSURE_RQST = 0x12  # 4 bytes(float)
 
 
 class Communication:
@@ -98,13 +100,13 @@ class Communication:
     def is_pump_off(self):
         self.i2c.write_byte(self.armothy_address, PUMP_STATE_RQST)
         block = self.i2c.read_i2c_block_data(self.armothy_address, PUMP_STATE_RQST, 1)
-        value = bitstring.pack('uint:8', block)
+        value = bitstring.pack('uint:8', *block)
         return value.int
 
     def is_valve_closed(self):
         self.i2c.write_byte(self.armothy_address, VALVE_STATE_RQST)
         block = self.i2c.read_i2c_block_data(self.armothy_address, VALVE_STATE_RQST, 1)
-        value = bitstring.pack('uint:8', block)
+        value = bitstring.pack('uint:8', *block)
         return value.int
 
     def get_pressure_value(self):
@@ -112,3 +114,15 @@ class Communication:
         block = self.i2c.read_i2c_block_data(self.armothy_address, PRESSURE_RQST, 4)
         value = bitstring.pack('4*uint:8', *block)
         return value.floatle
+    
+    def get_macro_status(self):
+        self.i2c.write_byte(self.armothy_address, MACRO_STATUS_RQST)
+        block = self.i2c.read_i2c_block_data(self.armothy_address, MACRO_STATUS_RQST, 1)
+        value = bitstring.pack('uint:8', *block)
+        return value.int
+    
+    def get_error_byte(self):
+        self.i2c.write_byte(self.armothy_address, ERROR_BYTE_RQST)
+        block = self.i2c.read_i2c_block_data(self.armothy_address, ERROR_BYTE_RQST, 1)
+        value = bitstring.pack('uint:8',* block)
+        return value.int

@@ -103,6 +103,12 @@ class Armothy:
     
     def execute_macro(self, macro, args):
         self.communication.send_macro_command(macro.value, args)
+    
+    def get_macro_status(self):
+        return self.communication.get_macro_status()
+    
+    def get_error_byte(self):
+        return self.communication.get_error_byte()
 
     def update(self):
         self._pump_state = ePumpState(self.communication.is_pump_on())
