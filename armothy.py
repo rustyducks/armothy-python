@@ -20,6 +20,7 @@ class eDoF(Enum):
 class eMacros(Enum):
     CATCH = 0
     TAKE_AND_STORE = 1
+    HOME = 2
 
 class Armothy:
     def __init__(self, armothy_i2c_address):
@@ -32,7 +33,7 @@ class Armothy:
         self.home()
 
     def home(self):
-        self.communication.start_calibration()
+        self.execute_macro(eMacros.HOME)
 
     @property
     def pump_state(self):
@@ -101,7 +102,7 @@ class Armothy:
     def start_pump(self):
         self.communication.start_pump()
     
-    def execute_macro(self, macro, args):
+    def execute_macro(self, macro, args=[]):
         self.communication.send_macro_command(macro.value, args)
     
     def get_macro_status(self):
