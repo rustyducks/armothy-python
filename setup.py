@@ -6,7 +6,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
 
-     name='armothy',  
+     name='armothy',
+     packages=['armothy'],
 
      version='0.1',
 
@@ -26,8 +27,6 @@ setuptools.setup(
    long_description_content_type="text/markdown",
 
      url="https://github.com/therustyducks/armothy-python",
-
-     packages=setuptools.find_packages(),
 
      classifiers=[
 
