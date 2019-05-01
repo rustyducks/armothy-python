@@ -1,5 +1,5 @@
 from enum import Enum
-from communication import Communication
+from .communication import Communication
 
 
 class ePumpState(Enum):
@@ -22,8 +22,17 @@ class eMacros(Enum):
     TAKE_AND_STORE = 1
     HOME = 2
 
+class eMacroStatus(Enum):
+    FINISHED = 1
+    RUNNING = 2
+    ERROR = 4
+
+class eStack(Enum):
+    LEFT_STACK = 0
+    RIGHT_STACK = 1
+
 class Armothy:
-    def __init__(self, armothy_i2c_address):
+    def __init__(self, armothy_i2c_address=0x74):
         self._pump_state = None
         self._valve_state = None
         self._axis_values = [0.0, 0.0, 0.0]
@@ -106,7 +115,7 @@ class Armothy:
         self.communication.send_macro_command(macro.value, args)
     
     def get_macro_status(self):
-        return self.communication.get_macro_status()
+        return eMacroStatus(self.communication.get_macro_status())
     
     def get_error_byte(self):
         return self.communication.get_error_byte()
