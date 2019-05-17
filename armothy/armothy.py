@@ -116,6 +116,12 @@ class Armothy:
     def start_pump(self):
         self.communication.start_pump()
     
+    def take_and_store(self, height, stack):
+        self.execute_macro(eMacros.TAKE_AND_STORE, [('float', height), ('uint', stack.value)])
+    
+    def put_down(self, height, stack, angle):
+        self.execute_macro(eMacros.PUT_DOWN, [('float', height), ('uint', stack.value), ('int', angle)])
+    
     def execute_macro(self, macro, args=[]):
         self.communication.send_macro_command(macro.value, args)
     
