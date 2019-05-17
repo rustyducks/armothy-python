@@ -39,7 +39,10 @@ class Armothy:
         self._pressure = 0.0
         self._is_moving = False
         self.communication = Communication(armothy_i2c_address)
+        self.rotate_y_axis(0)
+        self.rotate_z_axis(315)
         self.home()
+
 
     def home(self):
         self.execute_macro(eMacros.HOME)
