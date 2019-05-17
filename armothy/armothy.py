@@ -21,11 +21,13 @@ class eMacros(Enum):
     CATCH = 0
     TAKE_AND_STORE = 1
     HOME = 2
+    PUT_DOWN = 3
 
 class eMacroStatus(Enum):
     FINISHED = 1
     RUNNING = 2
     ERROR = 4
+    I2C_ERROR = 5
 
 class eStack(Enum):
     LEFT_STACK = 0
