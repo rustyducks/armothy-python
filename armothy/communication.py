@@ -116,10 +116,14 @@ class Communication:
         return value.floatle
     
     def get_macro_status(self):
-        self.i2c.write_byte(self.armothy_address, MACRO_STATUS_RQST)
-        block = self.i2c.read_i2c_block_data(self.armothy_address, MACRO_STATUS_RQST, 1)
-        value = bitstring.pack('uint:8', *block)
-        return value.int
+        try:
+            self.i2c.write_byte(self.armothy_address, MACRO_STATUS_RQST)
+            block = self.i2c.read_i2c_block_data(self.armothy_address, MACRO_STATUS_RQST, 1)
+            value = bitstring.pack('uint:8', *block)
+            return value.int
+        except OSError:
+            print("I2C Error !!!!!!")
+            return 5    #I2C_ERROR
     
     def get_error_byte(self):
         self.i2c.write_byte(self.armothy_address, ERROR_BYTE_RQST)
