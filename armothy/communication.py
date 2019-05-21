@@ -123,7 +123,7 @@ class Communication:
             return value.int
         except OSError:
             print("I2C Error !!!!!!")
-            return 5    #I2C_ERROR
+            return 9    #I2C_ERROR
     
     def get_error_byte(self):
         self.i2c.write_byte(self.armothy_address, ERROR_BYTE_RQST)

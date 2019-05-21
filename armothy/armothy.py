@@ -27,7 +27,8 @@ class eMacroStatus(Enum):
     FINISHED = 1
     RUNNING = 2
     ERROR = 4
-    I2C_ERROR = 5
+    RUNNING_SAFE = 5
+    I2C_ERROR = 9
 
 class eStack(Enum):
     LEFT_STACK = 0
