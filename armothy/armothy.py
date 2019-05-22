@@ -27,8 +27,8 @@ class eMacroStatus(Enum):
     FINISHED = 1
     RUNNING = 2
     ERROR = 4
-    RUNNING_SAFE = 5
-    I2C_ERROR = 9
+    RUNNING_SAFE = 8
+    I2C_ERROR = 16
 
 class eStack(Enum):
     LEFT_STACK = 0
@@ -42,8 +42,8 @@ class Armothy:
         self._pressure = 0.0
         self._is_moving = False
         self.communication = Communication(armothy_i2c_address)
-        self.rotate_y_axis(0)
-        self.rotate_z_axis(315)
+        #self.rotate_y_axis(0)
+        #self.rotate_z_axis(315)
         self.home()
 
 
