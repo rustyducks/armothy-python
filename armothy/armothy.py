@@ -22,6 +22,7 @@ class eMacros(Enum):
     TAKE_AND_STORE = 1
     HOME = 2
     PUT_DOWN = 3
+    PUT_IN_SCALE = 4
 
 class eMacroStatus(Enum):
     FINISHED = 1
@@ -122,6 +123,9 @@ class Armothy:
     
     def put_down(self, height, stack, angle, drop_height=300):
         self.execute_macro(eMacros.PUT_DOWN, [('float', height), ('uint', stack.value), ('int', angle), ('float', drop_height)])
+
+    def put_in_scale(self, height, stack, angle, drop_height=300):
+        self.execute_macro(eMacros.PUT_IN_SCALE, [('float', height), ('uint', stack.value), ('int', angle), ('float', drop_height)])
     
     def execute_macro(self, macro, args=[]):
         self.communication.send_macro_command(macro.value, args)
