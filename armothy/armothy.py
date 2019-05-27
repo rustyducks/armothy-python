@@ -120,8 +120,8 @@ class Armothy:
     def take_and_store(self, height, stack):
         self.execute_macro(eMacros.TAKE_AND_STORE, [('float', height), ('uint', stack.value)])
     
-    def put_down(self, height, stack, angle):
-        self.execute_macro(eMacros.PUT_DOWN, [('float', height), ('uint', stack.value), ('int', angle)])
+    def put_down(self, height, stack, angle, drop_height=300):
+        self.execute_macro(eMacros.PUT_DOWN, [('float', height), ('uint', stack.value), ('int', angle), ('float', drop_height)])
     
     def execute_macro(self, macro, args=[]):
         self.communication.send_macro_command(macro.value, args)
